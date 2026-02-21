@@ -49,13 +49,13 @@ const Header = () => {
     return (
         <>
             <header>
-                <nav>
-                    <NavLink to="/"><h1>HP Cloud</h1></NavLink>
-                    <div className="avtar">
+                <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                    <NavLink to="/" style={{ textDecoration: "none" }}><h1>HP Cloud</h1></NavLink>
+                    <div className="avtar" style={{ cursor: "pointer" }}>
                         {
                             logindata.ValidUserOne ? (
                                 <Avatar 
-                                    style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize", cursor: "pointer" }} 
+                                    style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} 
                                     onClick={handleClick}
                                 >
                                     {logindata.ValidUserOne.fname[0].toUpperCase()}
