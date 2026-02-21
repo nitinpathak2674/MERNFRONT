@@ -14,7 +14,6 @@ const Dashboard = () => {
 
     const DashboardValid = async () => {
         let token = localStorage.getItem("usersdatatoken");
-
         const res = await fetch("https://mernback-uw10.onrender.com/validuser", {
             method: "GET",
             headers: {
@@ -22,14 +21,31 @@ const Dashboard = () => {
                 "Authorization": token
             }
         });
-
         const resData = await res.json();
-
         if (res.status === 401 || !resData) {
             history("/"); 
         } else {
             setLoginData(resData);
             setData(true);
+        }
+    }
+
+    const logoutUser = async () => {
+        let token = localStorage.getItem("usersdatatoken");
+        const res = await fetch("https://mernback-uw10.onrender.com/logout", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
+            }
+        });
+        const resData = await res.json();
+        if (res.status === 201) {
+            localStorage.removeItem("usersdatatoken");
+            setLoginData(false);
+            history("/");
+        } else {
+            console.log("error");
         }
     }
 
@@ -40,31 +56,50 @@ const Dashboard = () => {
     const userGender = logindata?.ValidUserOne?.gender;
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f7fe" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f7fe", padding: "10px" }}>
             {data ? (
                 <div style={{ 
                     backgroundColor: "#fff", 
-                    padding: "40px", 
+                    padding: "30px", 
                     borderRadius: "20px", 
                     boxShadow: "0 10px 30px rgba(0,0,0,0.1)", 
                     textAlign: "center",
-                    width: "100%",
-                    maxWidth: "400px" 
+                    width: "90%",
+                    maxWidth: "380px" 
                 }}>
                     <img 
                         src={userGender === "Female" ? femaleImg : maleImg} 
                         alt="user profile" 
-                        style={{ width: "130px", height: "130px", borderRadius: "50%", border: "4px solid #673ab7", marginBottom: "20px", objectFit: "cover" }} 
+                        style={{ width: "100px", height: "100px", borderRadius: "50%", border: "4px solid #673ab7", marginBottom: "15px", objectFit: "cover" }} 
                     />
-                    <h1 style={{ fontSize: "28px", color: "#2c3e50", margin: "0", textTransform: "capitalize" }}>
+                    <h1 style={{ fontSize: "24px", color: "#2c3e50", margin: "0", textTransform: "capitalize" }}>
                         Welcome, {logindata?.ValidUserOne?.fname}
                     </h1>
-                    <p style={{ color: "#7f8c8d", marginTop: "10px" }}>
+                    <p style={{ color: "#7f8c8d", marginTop: "5px", fontSize: "14px" }}>
                         {logindata?.ValidUserOne?.email}
                     </p>
-                    <div style={{ marginTop: "20px", color: "#4caf50", fontWeight: "600" }}>
+                    <div style={{ marginTop: "15px", color: "#4caf50", fontWeight: "600", fontSize: "14px" }}>
                         Account Verified ✓
                     </div>
+                    
+                    {/* Ye wala button ab 100% dikhega mobile mein */}
+                    <button 
+                        onClick={logoutUser} 
+                        style={{ 
+                            marginTop: "25px", 
+                            width: "100%",
+                            padding: "12px", 
+                            backgroundColor: "#e74c3c", 
+                            color: "white", 
+                            border: "none", 
+                            borderRadius: "10px", 
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                            display: "block"
+                        }}>
+                        Logout
+                    </button>
                 </div>
             ) : (
                 <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
