@@ -48,7 +48,7 @@ const Register = () => {
         } else if (password !== cpassword) {
             toast.error("Passwords do not match!", { position: "top-center" });
         } else {
-           const data = await fetch("https://mernback-tdv5.onrender.com/register", {
+           const data = await fetch("https://mernback-uw10.onrender.com/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
