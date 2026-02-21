@@ -33,28 +33,6 @@ const Dashboard = () => {
         }
     }
 
-    const logoutUser = async () => {
-        let token = localStorage.getItem("usersdatatoken");
-
-        const res = await fetch("https://mernback-uw10.onrender.com/logout", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": token
-            }
-        });
-
-        const resData = await res.json();
-
-        if (res.status === 201) {
-            localStorage.removeItem("usersdatatoken");
-            setLoginData(false);
-            history("/");
-        } else {
-            console.log("error during logout");
-        }
-    }
-
     useEffect(() => {
         DashboardValid();
     }, []);
@@ -62,7 +40,7 @@ const Dashboard = () => {
     const userGender = logindata?.ValidUserOne?.gender;
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f7fe", flexDirection: "column" }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#f4f7fe" }}>
             {data ? (
                 <div style={{ 
                     backgroundColor: "#fff", 
@@ -87,20 +65,6 @@ const Dashboard = () => {
                     <div style={{ marginTop: "20px", color: "#4caf50", fontWeight: "600" }}>
                         Account Verified ✓
                     </div>
-                    <button 
-                        onClick={logoutUser} 
-                        style={{ 
-                            marginTop: "20px", 
-                            padding: "10px 20px", 
-                            backgroundColor: "#e74c3c", 
-                            color: "white", 
-                            border: "none", 
-                            borderRadius: "5px", 
-                            cursor: "pointer",
-                            fontWeight: "600"
-                        }}>
-                        Logout
-                    </button>
                 </div>
             ) : (
                 <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
