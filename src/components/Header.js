@@ -2,11 +2,22 @@ import React, { useContext } from 'react'
 import Avatar from '@mui/material/Avatar';
 import { LoginContext } from './ContextProvider/Context';
 import { useNavigate, NavLink } from "react-router-dom"
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const Header = () => {
 
     const { logindata, setLoginData } = useContext(LoginContext);
     const history = useNavigate();
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const logoutUser = async () => {
         let token = localStorage.getItem("usersdatatoken");
@@ -32,10 +43,7 @@ const Header = () => {
 
     const goDash = () => {
         history("/dash")
-    }
-
-    const goError = () => {
-        history("*")
+        handleClose();
     }
 
     return (
@@ -45,21 +53,33 @@ const Header = () => {
                     <NavLink to="/"><h1>HP Cloud</h1></NavLink>
                     <div className="avtar">
                         {
-                            logindata.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={goDash}>{logindata.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
-                                <Avatar style={{ background: "blue" }} onClick={goError} />
+                            logindata.ValidUserOne ? (
+                                <Avatar 
+                                    style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize", cursor: "pointer" }} 
+                                    onClick={handleClick}
+                                >
+                                    {logindata.ValidUserOne.fname[0].toUpperCase()}
+                                </Avatar>
+                            ) : (
+                                <Avatar style={{ background: "blue" }} />
+                            )
                         }
                     </div>
 
-                    <div className="nav-btn">
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                    >
                         {
                             logindata.ValidUserOne ? (
-                                <ul>
-                                    <li onClick={goDash}>Dashboard</li>
-                                    <li onClick={logoutUser}>Logout</li>
-                                </ul>
+                                <>
+                                    <MenuItem onClick={goDash}>Dashboard</MenuItem>
+                                    <MenuItem onClick={() => { logoutUser(); handleClose(); }}>Logout</MenuItem>
+                                </>
                             ) : null
                         }
-                    </div>
+                    </Menu>
                 </nav>
             </header>
         </>
