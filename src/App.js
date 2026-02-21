@@ -13,16 +13,12 @@ import { LoginContext } from "./components/ContextProvider/Context";
 function App() {
 
   const [data, setData] = useState(false);
-
-  const { logindata, setLoginData } = useContext(LoginContext);
-
-
+  const { setLoginData } = useContext(LoginContext);
   const history = useNavigate();
 
- const DashboardValid = async () => {
+  const DashboardValid = async () => {
     let token = localStorage.getItem("usersdatatoken");
 
-   
     const res = await fetch("https://mernback-uw10.onrender.com/validuser", {
       method: "GET",
       headers: {
@@ -31,23 +27,22 @@ function App() {
       }
     });
 
-    const data = await res.json();
+    const resData = await res.json();
 
-    if (data.status == 401 || !data) {
+    if (res.status === 401 || !resData) {
       console.log("user not valid");
     } else {
       console.log("user verify");
-      setLoginData(data)
+      setLoginData(resData)
       history("/dash");
     }
   }
 
   useEffect(() => {
-    setTimeout(()=>{
+    setTimeout(() => {
       DashboardValid();
       setData(true)
-    },2000)
-
+    }, 2000)
   }, [])
 
   return (
@@ -56,7 +51,6 @@ function App() {
         data ? (
           <>
             <Header />
-
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -64,14 +58,13 @@ function App() {
               <Route path="*" element={<Error />} />
             </Routes>
           </>
-
-        ) : <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
-          Loading... &nbsp;
-          <CircularProgress />
-        </Box>
+        ) : (
+          <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            Loading... &nbsp;
+            <CircularProgress />
+          </Box>
+        )
       }
-
-
     </>
   );
 }
