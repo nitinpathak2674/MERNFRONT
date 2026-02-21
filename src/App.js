@@ -9,7 +9,6 @@ import { Routes, Route, useNavigate } from "react-router-dom"
 import { useEffect, useContext, useState } from "react";
 import { LoginContext } from "./components/ContextProvider/Context";
 
-
 function App() {
 
   const [data, setData] = useState(false);
