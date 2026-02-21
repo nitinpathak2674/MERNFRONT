@@ -44,7 +44,7 @@ const Login = () => {
         }
 
         try {
-           const data = await fetch("https://mernback-tdv5.onrender.com/login", {
+           const data = await fetch("https://mernback-uw10.onrender.com/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
